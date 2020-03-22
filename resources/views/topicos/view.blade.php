@@ -8,6 +8,12 @@
         <div class="card-content">
             {{ $result->mensagem }}
         </div>
+        <div class="card-action">
+            @if (\Auth::user() and \Auth::user()->can('update', $result))
+                <a href="/topicos/{{ $result->id }}/edit">{{ __('lang13') }}</a>
+            @endif
+            <a href="/">{{ __('lang12') }}</a>
+        </div>
     </div>
 
     <respostas

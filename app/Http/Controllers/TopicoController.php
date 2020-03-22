@@ -4,27 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Topico;
 use Illuminate\Http\Request;
+use App\Http\Requests\TopicosRequest;
 
 class TopicoController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
-    }
+        $topicos = Topico:://orderBy('fixed', 'desc')
+            orderBy('updated_at', 'desc')
+            ->paginate();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json($topicos);
     }
 
     /**
@@ -33,20 +28,28 @@ class TopicoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TopicosRequest $request)
     {
-        //
+        $topico = new Topico;
+        $topico->titulo = $request->input('titulo');
+        $topico->mensagem = $request->input('mensagem');
+        $topico->user_id = \Auth::user()->id;
+        $topico->save();
+
+        // broadcast(new NewTopico($topico));
+
+        return response()->json(['created' => 'success', 'data' => $topico]);
     }
 
     /**
-     * Display the specified resource.
+     * Show the profile for the given user.
      *
-     * @param  \App\Topico  $topico
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return View
      */
-    public function show(Topico $topico)
+    public function show($id)
     {
-        //
+        return view('topicos.view', ['result' => Topico::findOrFail($id)]);
     }
 
     /**
@@ -57,7 +60,7 @@ class TopicoController extends Controller
      */
     public function edit(Topico $topico)
     {
-        //
+        return view('topicos.edit', compact('topico'));
     }
 
     /**
@@ -67,9 +70,19 @@ class TopicoController extends Controller
      * @param  \App\Topico  $topico
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Topico $topico)
+    public function update(TopicosRequest $request, Topico $topico)
     {
-        //
+        if (!isset($topico->id)) {
+            abort(404, "Tópico não encontrado");
+        }
+
+        $this->authorize('update', $topico);
+
+        $topico->titulo = $request->input('titulo');
+        $topico->mensagem = $request->input('mensagem');
+        $topico->update();
+
+        return redirect('/topicos/' . $topico->id);
     }
 
     /**
@@ -81,5 +94,25 @@ class TopicoController extends Controller
     public function destroy(Topico $topico)
     {
         //
+    }
+
+    public function pin(Topico $topico)
+    {
+        // $this->authorize('isAdmin', $topico);
+
+        // $topico->fixed = true;
+        // $topico->save();
+
+        // return redirect('/');
+    }
+
+    public function close(Topico $topico)
+    {
+        // $this->authorize('isAdmin', $topico);
+
+        // $topico->closed = true;
+        // $topico->save();
+
+        // return redirect('/');
     }
 }

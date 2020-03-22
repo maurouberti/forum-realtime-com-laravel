@@ -11,20 +11,38 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/teste', function () {
     return view('welcome');
-});
-
-Route::get('/topicos', function () {
-    return view('topicos.index');
-});
-
-Route::get('/topico/{id}', function ($id) {
-    $result = \App\Topico::findOrFail($id);
-    return view('topicos.view', compact('result'));
 });
 
 Route::get('/locale/{locale}', function ($locale) {
     session(['locale' => $locale]);
     return back();
 });
+
+
+Route::get('/', function () {
+    return view('topicos.index');
+});
+
+Route::get('/topicos/{id}', 'TopicoController@show');
+
+Route::middleware(['auth'])
+    ->group(function () {
+        Route::resource('topicos', 'TopicoController')->only([
+            'index', 'store', 'edit', 'update'
+        ]);
+
+        // Route::get('/reply/highligth/{id}', 'RepliesController@highligth');
+        // Route::get('/topico/pin/{topico}', 'TopicoController@pin');
+        // Route::get('/topico/close/{topico}', 'TopicoController@close');
+
+        // Route::get('/profile', 'ProfileController@edit');
+        // Route::post('/profile', 'ProfileController@update');
+
+        // Route::post('/replies', 'RepliesController@store');
+    });
+
+
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');

@@ -20,7 +20,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['lang4', 'lang6', 'lang7', 'lang8', 'lang9', 'lang10', 'lang11'],
+  data: function data() {
+    return {
+      topicos_response: [],
+      topicos_to_save: {
+        titulo: '',
+        mensagem: ''
+      }
+    };
+  },
+  methods: {
+    save: function save() {
+      var _this = this;
+
+      window.axios.post('/topicos', this.topicos_to_save).then(function () {
+        _this.getTopicos();
+      });
+    },
+    getTopicos: function getTopicos() {
+      var _this2 = this;
+
+      window.axios.get('/topicos').then(function (response) {
+        _this2.topicos_response = response.data;
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getTopicos();
+  }
+});
 
 /***/ }),
 
@@ -507,21 +570,122 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-content" }, [
-        _c("span", { staticClass: "card-title" }, [_vm._v("xxx")]),
-        _vm._v("\n\n        xxx\n    ")
+  return _c("div", { staticClass: "card" }, [
+    _c("div", { staticClass: "card-content" }, [
+      _c("span", { staticClass: "card-title" }, [_vm._v(_vm._s(_vm.lang6))]),
+      _vm._v(" "),
+      _c("table", [
+        _c("thead", [
+          _c("tr", [
+            _c("th", [_vm._v("#")]),
+            _vm._v(" "),
+            _c("th", [_vm._v(_vm._s(_vm.lang7))]),
+            _vm._v(" "),
+            _c("th", [_vm._v(_vm._s(_vm.lang8))]),
+            _vm._v(" "),
+            _c("th")
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.topicos_response.data, function(topico) {
+            return _c("tr", [
+              _c("td", [_vm._v(_vm._s(topico.id))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(topico.titulo))]),
+              _vm._v(" "),
+              _c("td", [_vm._v("0")]),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn",
+                    attrs: { href: "/topicos/" + topico.id }
+                  },
+                  [_vm._v(_vm._s(_vm.lang9))]
+                )
+              ])
+            ])
+          }),
+          0
+        )
       ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-content" }, [
+      _c("span", { staticClass: "card-title" }, [_vm._v(_vm._s(_vm.lang10))]),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.save()
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "input-field" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.topicos_to_save.titulo,
+                  expression: "topicos_to_save.titulo"
+                }
+              ],
+              attrs: { type: "text", placeholder: _vm.lang6 },
+              domProps: { value: _vm.topicos_to_save.titulo },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.topicos_to_save, "titulo", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-field" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.topicos_to_save.mensagem,
+                  expression: "topicos_to_save.mensagem"
+                }
+              ],
+              staticClass: "materialize-textarea",
+              attrs: { rows: "10", placeholder: _vm.lang11 },
+              domProps: { value: _vm.topicos_to_save.mensagem },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.topicos_to_save, "mensagem", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "btn red accent-2", attrs: { type: "submit" } },
+            [_vm._v(_vm._s(_vm.lang4))]
+          )
+        ]
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
