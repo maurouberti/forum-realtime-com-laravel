@@ -15,7 +15,8 @@ class LocaleMiddleware
      */
     public function handle($request, Closure $next)
     {
-        app()->setLocale(session('locale'));
+        $default = app()->getLocale();
+        app()->setLocale(session('locale', $default));
         return $next($request);
     }
 }

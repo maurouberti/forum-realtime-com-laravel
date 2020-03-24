@@ -19,6 +19,9 @@ class CreateTopicosTable extends Migration
             $table->timestamps();
             $table->string('titulo');
             $table->text('mensagem');
+            $table->integer('respostas_total')->default(0);
+            $table->boolean('fixado')->default(false);
+            $table->boolean('fechado')->default(false);
 
             $table->foreign('user_id')->references('id')->on('users');
         });

@@ -19,6 +19,7 @@ class CreateRespostasTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('topico_id');
             $table->text('mensagem');
+            $table->boolean('destaque')->default(false);
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('topico_id')->references('id')->on('topicos');

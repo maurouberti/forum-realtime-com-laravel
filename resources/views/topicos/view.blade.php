@@ -20,6 +20,9 @@
         lang2="{{ __('lang2') }}"
         lang3="{{ __('lang3') }}"
         lang4="{{ __('lang4') }}"
+        lang34="{{ __('lang34') }}"
+        topico-id="{{ $result->id }}"
+        is-closed="{{ $result->fechado }}"
     >
         @include('layouts.default.preloader')
     </respostas>

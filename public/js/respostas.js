@@ -39,8 +39,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['lang2', 'lang3', 'lang4']
+  props: ['lang2', 'lang3', 'lang4', 'lang34', 'topicoId', 'isClosed'],
+  data: function data() {
+    return {
+      logado: window.user || {},
+      respostas: [],
+      resposta_to_save: {
+        mensagem: '',
+        topico_id: this.topicoId
+      }
+    };
+  },
+  methods: {
+    save: function save() {
+      var _this = this;
+
+      window.axios.post('/respostas', this.resposta_to_save).then(function () {
+        _this.getRespostas();
+      });
+    },
+    getRespostas: function getRespostas() {
+      var _this2 = this;
+
+      window.axios.get('/respostas/' + this.topicoId).then(function (response) {
+        _this2.respostas = response.data;
+      });
+    }
+  },
+  mounted: function mounted() {
+    var _this3 = this;
+
+    this.getRespostas();
+    Echo.channel('nova.resposta.' + this.topicoId).listen('NovaRespostaEvent', function (e) {
+      if (e.resposta) {
+        _this3.getRespostas();
+      }
+    });
+  }
 });
 
 /***/ }),
@@ -528,51 +567,114 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "card horizontal" }, [
-      _c("div", { staticClass: "card-stacked" }, [
-        _c("div", { staticClass: "card-content" }, [
-          _c("span", { staticClass: "card-title" }, [
-            _vm._v("{data.user.name} " + _vm._s(_vm.lang2))
-          ]),
-          _vm._v(" "),
-          _c("blockquote", [
-            _vm._v("\n                    { data.body }\n                ")
+  return _c(
+    "div",
+    [
+      _vm._l(_vm.respostas, function(data) {
+        return _c(
+          "div",
+          {
+            staticClass: "card horizontal",
+            class: { "lime lighten-4": data.destaque }
+          },
+          [
+            _c("div", { staticClass: "card-images" }, [
+              _c("img", { attrs: { src: data.user.photo_url, alt: "" } })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-stacked" }, [
+              _c("div", { staticClass: "card-content" }, [
+                _c("span", { staticClass: "card-title" }, [
+                  _vm._v(_vm._s(data.user.name) + " " + _vm._s(_vm.lang2))
+                ]),
+                _vm._v(" "),
+                _c("blockquote", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(data.mensagem) +
+                      "\n                "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _vm.logado.role === "admin"
+                ? _c("div", { staticClass: "card-action" }, [
+                    _c(
+                      "a",
+                      { attrs: { href: "/resposta/destaque/" + data.id } },
+                      [_vm._v(_vm._s(_vm.lang34))]
+                    )
+                  ])
+                : _vm._e()
+            ])
+          ]
+        )
+      }),
+      _vm._v(" "),
+      _vm.isClosed == 0
+        ? _c("div", { staticClass: "card grey lighten-4" }, [
+            _c("div", { staticClass: "card-content" }, [
+              _c("span", { staticClass: "card-title" }, [
+                _vm._v(_vm._s(_vm.lang3))
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.save()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "input-field" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.resposta_to_save.mensagem,
+                          expression: "resposta_to_save.mensagem"
+                        }
+                      ],
+                      staticClass: "materialize-textarea",
+                      attrs: { rows: "10" },
+                      domProps: { value: _vm.resposta_to_save.mensagem },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.resposta_to_save,
+                            "mensagem",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn red accent-2",
+                      attrs: { type: "submit" }
+                    },
+                    [_vm._v(_vm._s(_vm.lang4))]
+                  )
+                ]
+              )
+            ])
           ])
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card grey lighten-4" }, [
-      _c("div", { staticClass: "card-content" }, [
-        _c("span", { staticClass: "card-title" }, [_vm._v(_vm._s(_vm.lang3))]),
-        _vm._v(" "),
-        _c("form", [
-          _vm._m(0),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "btn red accent-2", attrs: { type: "submit" } },
-            [_vm._v(_vm._s(_vm.lang4))]
-          )
-        ])
-      ])
-    ])
-  ])
+        : _vm._e()
+    ],
+    2
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-field" }, [
-      _c("textarea", {
-        staticClass: "materialize-textarea",
-        attrs: { rows: "10" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

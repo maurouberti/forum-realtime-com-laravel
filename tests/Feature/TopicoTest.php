@@ -11,12 +11,6 @@ class TopicoTest extends TestCase
 {
     use DatabaseMigrations;
 
-    // public function setUp()
-    // {
-    //     parent::setUp();
-    //     // $this->withoutMiddleware([\App\Http\Middleware\CorsMiddleware::class]);
-    // }
-
     public function testIndexController()
     {
         $user = factory(User::class)->create();

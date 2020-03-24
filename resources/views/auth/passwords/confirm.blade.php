@@ -1,44 +1,41 @@
-@extends('layouts.app')
+@extends('layouts.default')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Confirm Password') }}</div>
+            <div>
+                <h3>{{ __('lang18') }}</h3>
 
-                <div class="card-body">
-                    {{ __('Please confirm your password before continuing.') }}
+                <div>
+                    {{ __('lang30') }}
 
                     <form method="POST" action="{{ route('password.confirm') }}">
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
+                        <div class="row">
+                            <div class="input-field col s12">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                <label for="password">{{ __('lang21') }}</label>
 
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="helper-text" data-error="wrong" data-success="right">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Confirm Password') }}
-                                </button>
+                        <div class="row">
+                            <button type="submit" class="waves-effect waves-light btn">
+                                {{ __('lang18') }}
+                            </button>
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
+                            @if (Route::has('password.request'))
+                                <a class="btn red accent-2" href="{{ route('password.request') }}">
+                                    {{ __('lang23') }}
+                                </a>
+                            @endif
                         </div>
                     </form>
                 </div>

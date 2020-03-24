@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NovoTopicoEvent;
 use App\Topico;
 use Illuminate\Http\Request;
 use App\Http\Requests\TopicosRequest;
@@ -15,8 +16,8 @@ class TopicoController extends Controller
      */
     public function index()
     {
-        $topicos = Topico:://orderBy('fixed', 'desc')
-            orderBy('updated_at', 'desc')
+        $topicos = Topico::orderBy('fixado', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->paginate();
 
         return response()->json($topicos);
@@ -35,9 +36,9 @@ class TopicoController extends Controller
         $topico->mensagem = $request->input('mensagem');
         $topico->user_id = \Auth::user()->id;
         $topico->save();
-
-        // broadcast(new NewTopico($topico));
-
+    
+        broadcast(new NovoTopicoEvent($topico));
+            
         return response()->json(['created' => 'success', 'data' => $topico]);
     }
 
@@ -96,23 +97,23 @@ class TopicoController extends Controller
         //
     }
 
-    public function pin(Topico $topico)
+    public function fixar(Topico $topico)
     {
-        // $this->authorize('isAdmin', $topico);
+        $this->authorize('isAdmin', $topico);
 
-        // $topico->fixed = true;
-        // $topico->save();
+        $topico->fixado = !$topico->fixado;
+        $topico->save();
 
-        // return redirect('/');
+        return redirect('/');
     }
 
-    public function close(Topico $topico)
+    public function fechar(Topico $topico)
     {
-        // $this->authorize('isAdmin', $topico);
+        $this->authorize('isAdmin', $topico);
 
-        // $topico->closed = true;
-        // $topico->save();
+        $topico->fechado = !$topico->fechado;
+        $topico->save();
 
-        // return redirect('/');
+        return redirect('/');
     }
 }

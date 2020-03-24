@@ -25,13 +25,13 @@ class ExampleTest extends TestCase
     {
         $this->seed('RespostasTableSeeder');
         
-        $response = $this->get('/topico/1');
+        $response = $this->get('/topicos/1');
         $response->assertStatus(200);
         
-        $response = $this->get('/topico/2');
+        $response = $this->get('/topicos/2');
         $response->assertStatus(200);
         
-        $response = $this->get('/topico/a');
+        $response = $this->get('/topicos/a');
         $response->assertStatus(404);
     }
 
@@ -41,7 +41,7 @@ class ExampleTest extends TestCase
 
         $topico = \App\Topico::find(1);
 
-        $response = $this->get('/topico/1');
+        $response = $this->get('/topicos/1');
         $response->assertSee($topico->titulo);
         $response->assertSee($topico->mensagem);
     }

@@ -1,60 +1,55 @@
-@extends('layouts.app')
+@extends('layouts.default')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+            <div>
+            <h3>{{ __('lang19') }}</h3>
 
-                <div class="card-body">
+                <div>
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 
                         <input type="hidden" name="token" value="{{ $token }}">
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
+                        <div class="row">
+                            <div class="input-field col s12">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
+                                <label for="email">{{ __('lang20') }}</label>
 
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="helper-text" data-error="wrong" data-success="right">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
+                        <div class="row">
+                            <div class="input-field col s12">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                <label for="password">{{ __('lang21') }}</label>
 
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="helper-text" data-error="wrong" data-success="right">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
+                        <div class="row">
+                            <div class="input-field col s12">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <label for="password-confirm">{{ __('lang18') }}</label>
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
-                            </div>
+                        <div class="row">
+                            <button type="submit" class="waves-effect waves-light btn">
+                                {{ __('lang19') }}
+                            </button>
                         </div>
                     </form>
                 </div>

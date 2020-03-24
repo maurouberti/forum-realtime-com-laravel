@@ -17,7 +17,6 @@
                 </div>
                 <div class="card-action">
                     <button type="submit" class="btn red accent-2">{{ __('lang4') }}</button>
-
                     <a class="waves-effect waves-light btn" href="/topicos/{{ $topico->id }}">{{ __('lang12') }}</a>
                 </div>
             </form>

@@ -53,10 +53,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['lang4', 'lang6', 'lang7', 'lang8', 'lang9', 'lang10', 'lang11'],
+  props: ['lang4', 'lang6', 'lang7', 'lang8', 'lang9', 'lang10', 'lang11', 'lang35', 'lang36', 'lang37', 'lang38'],
   data: function data() {
     return {
+      logado: window.user || {},
       topicos_response: [],
       topicos_to_save: {
         titulo: '',
@@ -81,7 +84,16 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    var _this3 = this;
+
     this.getTopicos();
+    Echo.channel('novo.topico').listen('NovoTopicoEvent', function (e) {
+      console.log(e);
+
+      if (e.topico) {
+        _this3.topicos_response.data.splice(0, 0, e.topico);
+      }
+    });
   }
 });
 
@@ -590,12 +602,12 @@ var render = function() {
         _c(
           "tbody",
           _vm._l(_vm.topicos_response.data, function(topico) {
-            return _c("tr", [
+            return _c("tr", { class: { "lime lighten-4": topico.fixado } }, [
               _c("td", [_vm._v(_vm._s(topico.id))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(topico.titulo))]),
               _vm._v(" "),
-              _c("td", [_vm._v("0")]),
+              _c("td", [_vm._v(_vm._s(topico.respostas_total || 0))]),
               _vm._v(" "),
               _c("td", [
                 _c(
@@ -605,7 +617,29 @@ var render = function() {
                     attrs: { href: "/topicos/" + topico.id }
                   },
                   [_vm._v(_vm._s(_vm.lang9))]
-                )
+                ),
+                _vm._v(" "),
+                _vm.logado.role === "admin"
+                  ? _c(
+                      "a",
+                      {
+                        staticClass: "btn",
+                        attrs: { href: "/topico/fixar/" + topico.id }
+                      },
+                      [_vm._v(_vm._s(topico.fixado ? _vm.lang36 : _vm.lang35))]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.logado.role === "admin"
+                  ? _c(
+                      "a",
+                      {
+                        staticClass: "btn",
+                        attrs: { href: "/topico/fechar/" + topico.id }
+                      },
+                      [_vm._v(_vm._s(topico.fechado ? _vm.lang38 : _vm.lang37))]
+                    )
+                  : _vm._e()
               ])
             ])
           }),

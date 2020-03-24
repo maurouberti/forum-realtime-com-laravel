@@ -11,6 +11,11 @@ class TopicosPolicy
 
     public function update(User $user, Topico $topico)
     {
-        return $user->id === $topico->user_id;
+        return $user->id === $topico->user_id && !$topico->fechado;
+    }
+
+    public function isAdmin(User $user, Topico $topico)
+    {
+        return $user->role === 'admin';
     }
 }

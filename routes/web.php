@@ -21,27 +21,36 @@ Route::get('/locale/{locale}', function ($locale) {
 });
 
 
+
 Route::get('/', function () {
     return view('topicos.index');
 });
+Route::resource('topicos', 'TopicoController')->only([
+    'index', 'show'
+]);
 
-Route::get('/topicos/{id}', 'TopicoController@show');
+Route::get('/respostas/{id}', 'RespostaController@index');
 
-Route::middleware(['auth'])
-    ->group(function () {
-        Route::resource('topicos', 'TopicoController')->only([
-            'index', 'store', 'edit', 'update'
-        ]);
+Route::middleware(['auth'])->group(function () {
 
-        // Route::get('/reply/highligth/{id}', 'RepliesController@highligth');
-        // Route::get('/topico/pin/{topico}', 'TopicoController@pin');
-        // Route::get('/topico/close/{topico}', 'TopicoController@close');
+    Route::resource('topicos', 'TopicoController')->only([
+        'store', 'edit', 'update'
+    ]);
+    Route::get('/topico/fixar/{topico}', 'TopicoController@fixar');
+    Route::get('/topico/fechar/{topico}', 'TopicoController@fechar');
 
-        // Route::get('/profile', 'ProfileController@edit');
-        // Route::post('/profile', 'ProfileController@update');
+    Route::post('/respostas', 'RespostaController@store');
+    Route::get('/resposta/destaque/{id}', 'RespostaController@destaque');
 
-        // Route::post('/replies', 'RepliesController@store');
-    });
+        
+    Route::get('/profile', 'ProfileController@edit');
+    Route::post('/profile', 'ProfileController@update');
+        
+});
+
+
+Route::get('/login/{provider}', 'SocialAuthController@redirect');
+Route::get('/login/{provider}/callback', 'SocialAuthController@callback');
 
 
 Auth::routes();
